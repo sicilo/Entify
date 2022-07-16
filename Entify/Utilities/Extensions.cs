@@ -50,6 +50,7 @@
                 return data;
             });
         }
+
         private static Task<Entity> DataRowToEntity<Entity>(this DataRow dr)
         {
 
@@ -112,6 +113,47 @@
 
             return parameters;
         }
+
+        public static SqlParameter[] ToSqlParameters<Entity>(this Entity obj, params KeyValuePair<string, object>[] additionalParameters)
+        {
+
+            PropertyInfo[] props = typeof(Entity).GetProperties();
+            SqlParameter[] parameters = new SqlParameter[props.Length];
+
+            int index = 0;
+            foreach (PropertyInfo property in props)
+            {
+                if (property.PropertyType.Name == "IFormFile")
+                {
+                    IFormFile? val = (IFormFile?)property.GetValue(obj);
+
+                    parameters[index] = new SqlParameter(property.Name, val?.GetFileBytes());
+                }
+                else
+                    parameters[index] = new SqlParameter(property.Name, property.GetValue(obj));
+
+                index++;
+            }
+
+            foreach (KeyValuePair<string, object> pair in additionalParameters)
+                parameters[index] = new SqlParameter(pair.Key, pair.Value);
+
+            return parameters;
+        }
+
+        public static byte[] GetFileBytes(this IFormFile file)
+        {
+            byte[] bytes = Array.Empty<byte>();
+            using Stream fileStream = file.OpenReadStream();
+            if (file.Length > 0)
+            {
+                bytes = new byte[file.Length];
+                fileStream.Read(bytes, 0, (int)file.Length);
+            }
+
+            return bytes;
+        }
+
 
         public static DataTable ListToDataTable<T>(this List<T> listEntity)
         {
