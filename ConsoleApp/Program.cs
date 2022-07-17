@@ -43,22 +43,43 @@
 
 
 //Console.WriteLine("Hello, World!");
-string[] salutos = { "Hi", "Hallo" };
-MyFunc(salutos);
+//string[] salutos = { "Hi", "Hallo" };
+//MyFunc(salutos);
 
-void MyFunc(params string[] saldudos)
+//void MyFunc(params string[] saldudos)
+//{
+//    foreach (string saludo in saldudos)
+//    {
+//        Console.WriteLine(saludo);
+//    }
+//}
+
+//int edad = 10;
+//string myDerived = string.Empty;
+//object o = myDerived;
+//object p = edad;
+
+//Console.WriteLine("myDerived: Type is {0}", myDerived.GetType());
+//Console.WriteLine("object o = myDerived: Type is {0}", o.GetType());
+//Console.WriteLine("MyBaseClass b = myDerived: Type is {0}", p.GetType());
+
+var a = new
 {
-    foreach (string saludo in saldudos)
-    {
-        Console.WriteLine(saludo);
-    }
+    op = "hola",
+    edad = 26,
+};
+
+var b = new
+{
+    a,
+    hijos = 0,
+};
+
+var props = b.GetType().GetProperties();
+
+foreach (var prop in props)
+{
+    Console.WriteLine(prop.Name);
+    Console.WriteLine(prop.GetValue(b));
+    Console.WriteLine("---");
 }
-
-int edad = 10;
-string myDerived = string.Empty;
-object o = myDerived;
-object p = edad;
-
-Console.WriteLine("myDerived: Type is {0}", myDerived.GetType());
-Console.WriteLine("object o = myDerived: Type is {0}", o.GetType());
-Console.WriteLine("MyBaseClass b = myDerived: Type is {0}", p.GetType());

@@ -21,7 +21,7 @@
             });
         }
 
-        public static async Task<Result> ExecProcFirstAsync<Result, Parameters>(this SqlConnection connection, string storedProcedure, Parameters parameters)
+        public static async Task<Result> ExecProcFirstAsync<Result>(this SqlConnection connection, string storedProcedure, SqlParameter[] parameters)
         {
             return await ExecuteConnectionAsync(connection, async (SqlConnection dbConnection) =>
             {
@@ -31,9 +31,7 @@
                     CommandType = CommandType.StoredProcedure,
                 };
 
-                SqlParameter[] _parameters = parameters.ToSqlParameters();
-                foreach (SqlParameter parameter in _parameters)
-                    command.Parameters.Add(parameter);
+                command.Parameters.AddRange(parameters);
 
                 return (await command.ExecuteReader().ReaderToList<Result>()).First();
             });
@@ -53,7 +51,7 @@
             });
         }
 
-        public static async Task<List<Result>> ExecProcListAsync<Result, Parameters>(this SqlConnection connection, string storedProcedure, Parameters parameters)
+        public static async Task<List<Result>> ExecProcListAsync<Result>(this SqlConnection connection, string storedProcedure, SqlParameter[] parameters)
         {
             return await ExecuteConnectionAsync(connection, async (SqlConnection dbConnection) =>
             {
@@ -63,9 +61,7 @@
                     CommandType = CommandType.StoredProcedure,
                 };
 
-                SqlParameter[] _parameters = parameters.ToSqlParameters();
-                foreach (SqlParameter parameter in _parameters)
-                    command.Parameters.Add(parameter);
+                command.Parameters.AddRange(parameters);
 
                 return await (await command.ExecuteReaderAsync()).ReaderToList<Result>();
             });
@@ -86,20 +82,17 @@
             });
         }
 
-        public static async Task<Result> ExecProcScalarAsync<Result,Parameters>(this SqlConnection connection, string storedProcedure, Parameters parameters)
+        public static async Task<Result> ExecProcScalarAsync<Result>(this SqlConnection connection, string storedProcedure, SqlParameter[] parameters)
         {
             return await ExecuteConnectionAsync(connection, async (SqlConnection dbConnection) =>
             {
-
                 SqlCommand command = new(storedProcedure)
                 {
                     Connection = dbConnection,
                     CommandType = CommandType.StoredProcedure,
-                };
 
-                SqlParameter[] _parameters = parameters.ToSqlParameters();
-                foreach (SqlParameter parameter in _parameters)
-                    command.Parameters.Add(parameter);
+                };
+                command.Parameters.AddRange(parameters);
 
                 return await Task.FromResult((Result)Convert.ChangeType(value: command.ExecuteScalar(), typeof(Result)));
             });
