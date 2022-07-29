@@ -1,12 +1,12 @@
-﻿namespace Entify.Data
+﻿namespace Entify.Helpers.MSSQLProcedures
 {
+    using Entify.Utilities.Extensions;
     using System.Data;
     using System.Data.SqlClient;
     using System.Linq;
     using System.Threading.Tasks;
-    using Entify.Utilities;
 
-    public static class Manager
+    public static class MSSQLProcedures
     {
         public static async Task<Result> ExecProcFirstAsync<Result>(this SqlConnection connection, string storedProcedure)
         {
