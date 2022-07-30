@@ -147,14 +147,22 @@ BEGIN
 		IF @Op = ''READ''
 		BEGIN
 			SELECT 
-				JSON_VALUE(Tbl_Log.Value,''$.LogLevel'') LogLevel
-				,JSON_VALUE(Tbl_Log.Value,''$.ThreadId'') ThreadId
-				,JSON_VALUE(Tbl_Log.Value,''$.EventId'') EventId
-				,JSON_VALUE(Tbl_Log.Value,''$.EventName'') EventName
-				,JSON_VALUE(Tbl_Log.Value,''$.Message'') Message
-				,JSON_VALUE(Tbl_Log.Value,''$.ExceptionMessage'') ExceptionMessage
-				,JSON_VALUE(Tbl_Log.Value,''$.ExceptionStackTrace'') ExceptionStackTrace
-				,JSON_VALUE(Tbl_Log.Value,''$.ExceptionSource'') ExceptionSource
+				JSON_VALUE(Value,''$.LogLevel'') LogLevel
+				,JSON_VALUE(Value,''$.ThreadId'') ThreadId
+				,JSON_VALUE(Value,''$.EventId'') EventId
+				,JSON_VALUE(Value,''$.EventName'') EventName
+				,CASE WHEN ISJSON(JSON_VALUE(Value,''$.Message'')) = 1
+					THEN JSON_VALUE(JSON_VALUE(Value,''$.Message''),''$.methodName'')
+					ELSE NULL
+				 END Method
+				,CASE WHEN ISJSON(JSON_VALUE(Value,''$.Message'')) = 1
+					THEN JSON_VALUE(JSON_VALUE(Value,''$.Message''),''$.message'')
+					ELSE JSON_VALUE(Value,''$.Message'')
+				 END Message
+				,JSON_VALUE(Value,''$.Message'') Message
+				,JSON_VALUE(Value,''$.ExceptionMessage'') ExceptionMessage
+				,JSON_VALUE(Value,''$.ExceptionStackTrace'') ExceptionStackTrace
+				,JSON_VALUE(Value,''$.ExceptionSource'') ExceptionSource
 				,Created
 			FROM Tbl_Log
 
