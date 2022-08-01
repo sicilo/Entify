@@ -112,6 +112,15 @@ namespace Entify.Services.Logger {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to @Created.
+        /// </summary>
+        public static string CREATED {
+            get {
+                return ResourceManager.GetString("CREATED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sp_Log.
         /// </summary>
         public static string DEFAULT_PROC_NAME {
@@ -126,6 +135,33 @@ namespace Entify.Services.Logger {
         public static string DEFAULT_TABLE_NAME {
             get {
                 return ResourceManager.GetString("DEFAULT_TABLE_NAME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to @Op.
+        /// </summary>
+        public static string OP {
+            get {
+                return ResourceManager.GetString("OP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE.
+        /// </summary>
+        public static string OP_VALUE {
+            get {
+                return ResourceManager.GetString("OP_VALUE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to @Value.
+        /// </summary>
+        public static string VALUE {
+            get {
+                return ResourceManager.GetString("VALUE", resourceCulture);
             }
         }
     }

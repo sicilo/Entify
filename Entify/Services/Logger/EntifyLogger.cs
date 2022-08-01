@@ -91,14 +91,14 @@
             command.Connection = connection;
             command.CommandType = CommandType.StoredProcedure;
 
-            command.Parameters.Add(new SqlParameter("@Op", "CREATE"));
-            command.Parameters.Add(new SqlParameter("@Value", JsonConvert.SerializeObject(values, new JsonSerializerSettings
+            command.Parameters.Add(new SqlParameter(SqlQueries.OP,SqlQueries.OP_VALUE));
+            command.Parameters.Add(new SqlParameter(SqlQueries.VALUE, JsonConvert.SerializeObject(values, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore,
                 DefaultValueHandling = DefaultValueHandling.Ignore,
                 Formatting = Formatting.None,
             })));
-            command.Parameters.Add(new SqlParameter("@Created", DateTime.Now));
+            command.Parameters.Add(new SqlParameter(SqlQueries.CREATED, DateTime.Now));
 
             command.ExecuteNonQuery();
             connection.Close();
