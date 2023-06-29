@@ -1,68 +1,64 @@
-﻿namespace Entify.Utilities.Extensions
+﻿namespace Entify.Utilities
 {
     using System.Data;
-    using System.Reflection;
+    
     public static class DataExtensions
     {
-        public static Task<List<Entity>> DataTableToList<Entity>(this DataTable dataTable)
+        public static Task<List<T>> DataTableToList<T>(this DataTable dataTable)
             => Task.Run(async () =>
             {
-                List<Entity> data = new();
+                List<T> data = new();
 
                 foreach (DataRow row in dataTable.Rows)
                 {
-                    Entity instance = await DataRowToEntity<Entity>(row);
+                    T instance = await DataRowToEntity<T>(row);
                     data.Add(instance);
                 }
 
                 return data;
             });
 
-        private static Task<Entity> DataRowToEntity<Entity>(this DataRow dr)
+        private static Task<T> DataRowToEntity<T>(this DataRow dr)
             => Task.Run(() =>
             {
-                PropertyInfo[] properties = typeof(Entity).GetProperties();
-                Entity result = Activator.CreateInstance<Entity>();
+                var properties = typeof(T).GetProperties();
+                var result = Activator.CreateInstance<T>();
 
                 foreach (DataColumn column in dr.Table.Columns)
-                    foreach (PropertyInfo pro in properties)
+                    foreach (var pro in properties)
                         if (column.ColumnName.Equals(pro.Name))
                             switch (column.DataType.Name)
                             {
                                 case "String":
-                                    pro.SetValue(result, !dr.IsNull(column) ? dr.Field<string>(column.ColumnName)?.Trim() : "", null);
+                                    pro.SetValue(result, !dr.IsNull(column) ? dr.Field<string>(column.ColumnName)?.Trim() : string.Empty, null);
                                     break;
                                 default:
                                     pro.SetValue(result, !dr.IsNull(column) ? dr.Field<object>(column.ColumnName) : 0, null);
                                     break;
                             }
-                        else
-                            continue;
-
-
+                
                 return result;
             });
 
-        public static DataTable ListToDataTable<T>(this List<T> listEntity)
+        public static DataTable ListToDataTable<T>(this List<T> list)
         {
-            DataTable TableResult = new();
-            DataRow Row = TableResult.NewRow();
-            PropertyInfo[] Properties = typeof(T).GetProperties();
+            var tableResult = new DataTable();
+            var row = tableResult.NewRow();
+            var properties = typeof(T).GetProperties();
 
-            foreach (PropertyInfo property in Properties)
-                TableResult.Columns.Add(property.Name, property.PropertyType);
+            foreach (var property in properties)
+                tableResult.Columns.Add(property.Name, property.PropertyType);
 
-            foreach (T item in listEntity)
+            foreach (var item in list)
             {
-                foreach (PropertyInfo property in Properties)
-                    Row.SetField(property.Name, property.GetValue(item));
+                foreach (var property in properties)
+                    row.SetField(property.Name, property.GetValue(item));
 
-                TableResult.Rows.Add(Row);
-                Row = TableResult.NewRow();
+                tableResult.Rows.Add(row);
+                row = tableResult.NewRow();
             }
-
-
-            return TableResult;
+            
+            return tableResult;
         }
     }
 }

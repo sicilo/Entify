@@ -1,5 +1,7 @@
 ﻿
-namespace Entify.Utilities.Extensions
+using System.Data.Common;
+
+namespace Entify.Utilities
 {
     using Microsoft.AspNetCore.Http;
     using System.Data.SqlClient;
@@ -8,19 +10,19 @@ namespace Entify.Utilities.Extensions
     public static class SqlClientExtensions
     {
 
-        public static Task<List<Entity>> ReaderToList<Entity>(this SqlDataReader reader)
+        public static Task<List<T>> ReaderToList<T>(this DbDataReader reader)
             => Task.Run(() =>
             {
-                List<Entity> result = new();
-                PropertyInfo[] properties = typeof(Entity).GetProperties();
+                List<T> result = new();
+                var properties = typeof(T).GetProperties();
 
-                int columns = reader.FieldCount;
+                var columns = reader.FieldCount;
 
                 while (reader.Read())
                 {
-                    Entity row = Activator.CreateInstance<Entity>();
+                    T row = Activator.CreateInstance<T>();
 
-                    for (int column = 0; column < columns; column++)
+                    for (var column = 0; column < columns; column++)
                         foreach (PropertyInfo property in properties)
                             if (reader.GetName(column) == property.Name && !reader.IsDBNull(column) && property.CanWrite)
                                 property.SetValue(row,
@@ -35,27 +37,27 @@ namespace Entify.Utilities.Extensions
             });
         
 
-        public static SqlParameter[] ToSqlParameters(this object obj, object? addtionalParameters = null)
+        public static IEnumerable<DbParameter> ToDbParameters(this object obj, object? addtionalParameters = null)
         {
-            PropertyInfo[] props = obj.GetType().GetProperties();
-            List<SqlParameter> parameters = new();
+            var props = obj.GetType().GetProperties();
+            List<DbParameter> parameters = new();
 
-            foreach (PropertyInfo property in props)
+            foreach (var property in props)
                 if (property.PropertyType == typeof(IFormFile))
                     parameters.Add(new SqlParameter(property.Name, ((IFormFile?)property.GetValue(obj))?.GetFileBytes()));
                 else
                     parameters.Add(new SqlParameter(property.Name, property.GetValue(obj)));
 
 
-            if (addtionalParameters != null)
-                parameters.AddRange(addtionalParameters.ToSqlParameters());
+            if (addtionalParameters is not null)
+                parameters.AddRange(addtionalParameters.ToDbParameters());
 
             return parameters.ToArray();
         }
 
-        public static byte[] GetFileBytes(this IFormFile file)
+        private static byte[] GetFileBytes(this IFormFile file)
         {
-            byte[] bytes = Array.Empty<byte>();
+            var bytes = Array.Empty<byte>();
             using Stream fileStream = file.OpenReadStream();
             if (file.Length > 0)
             {
