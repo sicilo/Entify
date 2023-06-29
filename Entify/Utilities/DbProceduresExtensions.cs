@@ -7,7 +7,8 @@
 
     public static class DbProceduresExtensions
     {
-        public static async Task<TResult> ExecProcFirstAsync<TResult>(this DbConnection connection, string storedProcedure)
+        public static async Task<TResult> ExecProcFirstAsync<TResult>(this DbConnection connection,
+            string storedProcedure)
         {
             return await connection.ExecuteConnectionAsync(async dbConnection =>
             {
@@ -106,10 +107,17 @@
         private static async Task<TResult> ExecuteConnectionAsync<TResult>(this DbConnection connection,
             Func<DbConnection, Task<TResult>> func)
         {
-            connection.Open();
-            var result = await func(connection);
-            connection.Close();
-            return result;
+            try
+            {
+                connection.Open();
+                var result = await func(connection);
+                connection.Close();
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Entify process exception", e);
+            }
         }
     }
 }
