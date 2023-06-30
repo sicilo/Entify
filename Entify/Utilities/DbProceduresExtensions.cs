@@ -156,12 +156,15 @@ public static class DbProceduresExtensions
         {
             await connection.OpenAsync();
             var result = await func(connection);
-            await connection.CloseAsync();
             return result;
         }
         catch (Exception e)
         {
             throw new Exception("Entify process exception", e);
+        }
+        finally
+        {
+            await connection.CloseAsync();
         }
     }
 }
