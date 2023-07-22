@@ -1,44 +1,46 @@
 ﻿namespace Entify.Utilities
 {
     using System.Data;
-    
+
     public static class DataExtensions
     {
-        public static Task<List<T>> DataTableToList<T>(this DataTable dataTable)
-            => Task.Run(async () =>
-            {
-                List<T> data = new();
+        public static IEnumerable<T> DataTableToList<T>(this DataTable dataTable)
+        {
+            return from DataRow row in dataTable.Rows select DataRowToEntity<T>(row);
+        }
 
-                foreach (DataRow row in dataTable.Rows)
+        private static T DataRowToEntity<T>(this DataRow dr)
+        {
+            var properties = typeof(T).GetProperties();
+            var result = Activator.CreateInstance<T>();
+
+            foreach (DataColumn column in dr.Table.Columns)
+            {
+                foreach (var pro in properties)
                 {
-                    T instance = await DataRowToEntity<T>(row);
-                    data.Add(instance);
+                    if (column.ColumnName.Equals(pro.Name))
+                    {
+                        switch (column.DataType.Name)
+                        {
+                            case nameof(string.GetType):
+                                pro.SetValue(result,
+                                    !dr.IsNull(column)
+                                        ? dr.Field<string>(column.ColumnName)?.Trim()
+                                        : string.Empty);
+                                break;
+                            default:
+                                pro.SetValue(result,
+                                    !dr.IsNull(column)
+                                        ? dr.Field<object>(column.ColumnName)
+                                        : 0);
+                                break;
+                        }
+                    }
                 }
+            }
 
-                return data;
-            });
-
-        private static Task<T> DataRowToEntity<T>(this DataRow dr)
-            => Task.Run(() =>
-            {
-                var properties = typeof(T).GetProperties();
-                var result = Activator.CreateInstance<T>();
-
-                foreach (DataColumn column in dr.Table.Columns)
-                    foreach (var pro in properties)
-                        if (column.ColumnName.Equals(pro.Name))
-                            switch (column.DataType.Name)
-                            {
-                                case "String":
-                                    pro.SetValue(result, !dr.IsNull(column) ? dr.Field<string>(column.ColumnName)?.Trim() : string.Empty, null);
-                                    break;
-                                default:
-                                    pro.SetValue(result, !dr.IsNull(column) ? dr.Field<object>(column.ColumnName) : 0, null);
-                                    break;
-                            }
-                
-                return result;
-            });
+            return result;
+        }
 
         public static DataTable ListToDataTable<T>(this List<T> list)
         {
@@ -57,7 +59,7 @@
                 tableResult.Rows.Add(row);
                 row = tableResult.NewRow();
             }
-            
+
             return tableResult;
         }
     }

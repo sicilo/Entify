@@ -1,4 +1,6 @@
-﻿namespace Entify.Utilities;
+﻿using Entify.Resources;
+
+namespace Entify.Utilities;
 
 using Helpers;
 using System.Data;
@@ -24,7 +26,7 @@ public static class DbProceduresExtensions
             command.CommandText = storedProcedure;
             command.CommandType = CommandType.StoredProcedure;
 
-            return (await (await command.ExecuteReaderAsync()).ReaderToList<TResult>()).First();
+            return (await command.ExecuteReaderAsync()).ReaderToList<TResult>().First();
         });
     }
 
@@ -48,7 +50,31 @@ public static class DbProceduresExtensions
 
             command.Parameters.AddRange(parameters);
 
-            return (await (await command.ExecuteReaderAsync()).ReaderToList<TResult>()).First();
+            return (await command.ExecuteReaderAsync()).ReaderToList<TResult>().First();
+        });
+    }
+
+    /// <summary>
+    /// executes a stored procedure in the database.
+    /// </summary>
+    /// <param name="connection">connection that implements DbConnection</param>
+    /// <param name="storedProcedure">name of the stored procedure</param>
+    /// <param name="parameters">stored procedure's parameters, will be converted to DbParameters by the connection extension</param>
+    /// <typeparam name="TResult">type of the result that is expected</typeparam>
+    /// <returns>returns the first result of a generic IEnumerable</returns>
+    public static async Task<TResult> ExecProcFirstAsync<TResult>(this DbConnection connection,
+        string storedProcedure, object parameters)
+    {
+        return await connection.ExecuteConnectionAsync(async dbConnection =>
+        {
+            var command = dbConnection.CreateCommand();
+            command.Connection = dbConnection;
+            command.CommandText = storedProcedure;
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddRange(connection.ToDbParameters(parameters).ToArray());
+
+            return (await command.ExecuteReaderAsync()).ReaderToList<TResult>().First();
         });
     }
 
@@ -59,7 +85,7 @@ public static class DbProceduresExtensions
     /// <param name="storedProcedure">name of the stored procedure</param>
     /// <typeparam name="TResult">type of the result that is expected</typeparam>
     /// <returns>returns a generic IEnumerable</returns>
-    public static async Task<List<TResult>> ExecProcListAsync<TResult>(this DbConnection connection,
+    public static async Task<IEnumerable<TResult>> ExecProcListAsync<TResult>(this DbConnection connection,
         string storedProcedure)
     {
         return await connection.ExecuteConnectionAsync(async dbConnection =>
@@ -69,7 +95,7 @@ public static class DbProceduresExtensions
             command.CommandText = storedProcedure;
             command.CommandType = CommandType.StoredProcedure;
 
-            return await (await command.ExecuteReaderAsync()).ReaderToList<TResult>();
+            return (await command.ExecuteReaderAsync()).ReaderToList<TResult>().ToArray();
         });
     }
 
@@ -93,7 +119,31 @@ public static class DbProceduresExtensions
 
             command.Parameters.AddRange(parameters);
 
-            return await (await command.ExecuteReaderAsync()).ReaderToList<TResult>();
+            return (await command.ExecuteReaderAsync()).ReaderToList<TResult>().ToArray();
+        });
+    }
+
+    /// <summary>
+    /// executes a stored procedure with its parameters in the database.
+    /// </summary>
+    /// <param name="connection">connection that implements DbConnection</param>
+    /// <param name="parameters">stored procedure's parameters, will be converted to DbParameters by the connection extension</param>
+    /// <param name="storedProcedure">name of the stored procedure</param>
+    /// <typeparam name="TResult">type of the result that is expected</typeparam>
+    /// <returns>returns a generic IEnumerable</returns>
+    public static async Task<IEnumerable<TResult>> ExecProcListAsync<TResult>(this DbConnection connection,
+        string storedProcedure, object parameters)
+    {
+        return await connection.ExecuteConnectionAsync(async dbConnection =>
+        {
+            var command = dbConnection.CreateCommand();
+            command.Connection = dbConnection;
+            command.CommandText = storedProcedure;
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddRange(connection.ToDbParameters(parameters).ToArray());
+
+            return (await command.ExecuteReaderAsync()).ReaderToList<TResult>().ToArray();
         });
     }
 
@@ -148,6 +198,32 @@ public static class DbProceduresExtensions
         });
     }
 
+    /// <summary>
+    /// executes a stored procedure with its parameters in the database.
+    /// </summary>
+    /// <param name="connection">connection that implements DbConnection</param>
+    /// <param name="storedProcedure">name of the stored procedure</param>
+    /// <param name="parameters">stored procedure's parameters, will be converted to DbParameters by the connection extension</param>
+    /// <typeparam name="TResult">type of the result that is expected</typeparam>
+    /// <returns>returns just one single value</returns>
+    public static async Task<TResult> ExecProcScalarAsync<TResult>(this DbConnection connection,
+        string storedProcedure, object parameters)
+    {
+        return await connection.ExecuteConnectionAsync(async dbConnection =>
+        {
+            var command = dbConnection.CreateCommand();
+            command.Connection = dbConnection;
+            command.CommandText = storedProcedure;
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddRange(connection.ToDbParameters(parameters).ToArray());
+
+            var commandResult = await command.ExecuteScalarAsync();
+
+            return commandResult.ConvertToGeneric<TResult>();
+        });
+    }
+
 
     private static async Task<TResult> ExecuteConnectionAsync<TResult>(this DbConnection connection,
         Func<DbConnection, Task<TResult>> func)
@@ -160,7 +236,7 @@ public static class DbProceduresExtensions
         }
         catch (Exception e)
         {
-            throw new Exception("Entify process exception", e);
+            throw new Exception(string.Format(Messages.EntifyExcception, e.Message));
         }
         finally
         {
