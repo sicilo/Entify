@@ -30,4 +30,10 @@
     <data name="EntifyException" xml:space="preserve">
         <value>Entify process exception, something went wrong {0}</value>
     </data>
+    <data name="UnexpectedDataReaderException" xml:space="preserve">
+        <value>The DataReader has more columns the expected, please check if your entity has the right structure or if your Query returns the right data.</value>
+    </data>
+    <data name="NullDataReaderColumnException" xml:space="preserve">
+        <value>The DataReader column that we expected has a null value and that is not right.</value>
+    </data>
 </root>

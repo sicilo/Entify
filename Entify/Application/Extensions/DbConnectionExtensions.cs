@@ -75,7 +75,7 @@ public static class DbConnectionExtensions
 
             var reader = await command.ExecuteReaderAsync();
 
-            return reader.ReaderToList<TResult>().ToList();
+            return reader.ReaderToList<TResult>();
         });
 
     public static async Task<IEnumerable<TResult>> ExecProcReaderAsync<TResult>(
@@ -86,7 +86,7 @@ public static class DbConnectionExtensions
         {
             var reader = await command.ExecuteReaderAsync();
 
-            return reader.ReaderToList<TResult>().ToList();
+            return reader.ReaderToList<TResult>();
         });
     
     public static async Task<TResult> ExecProcEntityAsync<TResult>(

@@ -22,7 +22,7 @@ public static class DataExtensions
                 {
                     switch (column.DataType.Name)
                     {
-                        case nameof(string.GetType):
+                        case "string":
                             pro.SetValue(result,
                                 !dr.IsNull(column)
                                     ? dr.Field<string>(column.ColumnName)?.Trim()

@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Common;
 using Entify.Application.Attributes;
 using Entify.Application.Helpers;

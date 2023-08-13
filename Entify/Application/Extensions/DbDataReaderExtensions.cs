@@ -1,6 +1,7 @@
 using System.Collections;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Common;
+using System.Reflection;
 using Entify.Application.Attributes;
 using Entify.Application.Exceptions;
 using Entify.Application.Helpers;
@@ -12,8 +13,9 @@ public static class DbDataReaderExtensions
 {
     public static IEnumerable<T> ReaderToList<T>(this DbDataReader reader)
     {
+        var result = Activator.CreateInstance<List<T>>();
         var properties = typeof(T).GetProperties();
-        
+
         var columns = reader.FieldCount;
 
         while (reader.Read())
@@ -24,11 +26,11 @@ public static class DbDataReaderExtensions
             {
                 foreach (var property in properties)
                 {
-                    var propColumnName =  
-                        property.HasPropertyAttribute<ColumnAttribute>() 
-                            ? property.GetPropertyAttribute<ColumnAttribute>().Name 
+                    var propColumnName =
+                        property.HasPropertyAttribute<ColumnAttribute>()
+                            ? property.GetPropertyAttribute<ColumnAttribute>().Name
                             : property.Name;
-                    
+
                     if (reader.GetName(column).Equals(propColumnName) && !reader.IsDBNull(column) && property.CanWrite)
                     {
                         property.SetValue(row,
@@ -39,14 +41,16 @@ public static class DbDataReaderExtensions
                 }
             }
 
-            yield return row;
+            result.Add(row);
         }
+
+        return result;
     }
-    
+
     public static T ReaderToEntity<T>(this DbDataReader reader)
     {
         var properties = typeof(T).GetProperties();
-        
+
         var columns = reader.FieldCount;
         var row = Activator.CreateInstance<T>();
 
@@ -56,11 +60,11 @@ public static class DbDataReaderExtensions
             {
                 foreach (var property in properties)
                 {
-                    var propColumnName =  
-                        property.HasPropertyAttribute<ColumnAttribute>() 
-                            ? property.GetPropertyAttribute<ColumnAttribute>().Name 
+                    var propColumnName =
+                        property.HasPropertyAttribute<ColumnAttribute>()
+                            ? property.GetPropertyAttribute<ColumnAttribute>().Name
                             : property.Name;
-                    
+
                     if (reader.GetName(column).Equals(propColumnName) && !reader.IsDBNull(column) && property.CanWrite)
                     {
                         property.SetValue(row,
@@ -70,32 +74,33 @@ public static class DbDataReaderExtensions
                     }
                 }
             }
+
             break;
         }
-        
+
         return row;
     }
-    
+
     public static T ReaderToScalar<T>(this DbDataReader reader)
     {
         object? value = default;
-        
+
         if (reader.FieldCount > 1)
-            throw new EntifyException("");
-         
-        
+            throw new EntifyException(ExceptionMessages.UnexpectedDataReaderException);
+
+
         while (reader.Read())
         {
-            value = reader.GetValue(1);
+            value = reader.GetValue(0);
             break;
         }
 
         if (value is null)
-            throw new EntifyException("");
-        
+            throw new EntifyException(ExceptionMessages.NullDataReaderColumnException);
+
         return value.ConvertTo<T>();
     }
-    
+
     public static TResult MultiResultReaderToEntity<TResult>(this DbDataReader reader)
     {
         var resultType = typeof(TResult);
@@ -107,8 +112,9 @@ public static class DbDataReaderExtensions
             var propertyType = property.PropertyType;
             var readerExtensions = typeof(DbDataReaderExtensions);
             var methodName = string.Empty;
+            var isEnumerable = typeof(IEnumerable).IsAssignableFrom(propertyType);
             
-            if (typeof(IEnumerable).IsAssignableFrom(propertyType))
+            if (isEnumerable)
             {
                 methodName = "ReaderToList";
             }
@@ -120,10 +126,12 @@ public static class DbDataReaderExtensions
             {
                 methodName = "ReaderToScalar";
             }
+
+            var genericArgument = isEnumerable ? propertyType.GetGenericArguments().First(): propertyType;
             
             var method = readerExtensions
-                .GetMethod(methodName)
-                ?.MakeGenericMethod(propertyType);
+                .GetMethod(methodName, BindingFlags.Static | BindingFlags.Public)
+                ?.MakeGenericMethod(genericArgument);
 
             if (method is null)
             {
@@ -131,9 +139,17 @@ public static class DbDataReaderExtensions
                 throw new EntifyException(message);
             }
 
-            var methodResult = method.Invoke(null,null);
-                
-            property.SetValue(resultInstance,methodResult);
+            try
+            {
+                var methodResult = method.Invoke(null, new object[] { reader });
+
+                var result = isEnumerable ? methodResult as IEnumerable : methodResult;
+                property.SetValue(resultInstance, result);
+            }
+            catch (Exception e)
+            {
+                throw new EntifyException(e.Message);
+            }
 
             reader.NextResult();
         }

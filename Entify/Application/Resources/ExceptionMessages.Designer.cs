@@ -68,5 +68,17 @@ namespace Entify.Application.Resources {
                 return ResourceManager.GetString("EntifyException", resourceCulture);
             }
         }
+        
+        public static string UnexpectedDataReaderException {
+            get {
+                return ResourceManager.GetString("UnexpectedDataReaderException", resourceCulture);
+            }
+        }
+        
+        public static string NullDataReaderColumnException {
+            get {
+                return ResourceManager.GetString("NullDataReaderColumnException", resourceCulture);
+            }
+        }
     }
 }
