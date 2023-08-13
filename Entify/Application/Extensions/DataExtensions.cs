@@ -1,4 +1,8 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
+using Entify.Application.Exceptions;
+using Entify.Application.Helpers;
+using Entify.Application.Resources;
 
 namespace Entify.Application.Extensions;
 
@@ -57,7 +61,15 @@ public static class DataExtensions
         {
             foreach (var property in properties)
             {
-                row.SetField(property.Name, property.GetValue(item));
+                var propColumnName =
+                    property.HasPropertyAttribute<ColumnAttribute>()
+                        ? property.GetPropertyAttribute<ColumnAttribute>().Name
+                        : property.Name;
+
+                if (string.IsNullOrEmpty(propColumnName))
+                    throw new EntifyException(ExceptionMessages.NullReferenceException);
+                
+                row.SetField(propColumnName, property.GetValue(item));
             }
 
             tableResult.Rows.Add(row);

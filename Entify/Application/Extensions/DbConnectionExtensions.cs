@@ -121,7 +121,6 @@ public static class DbConnectionExtensions
     )
         => await connection.Exec(storedProcedure, async command =>
         {
-
             command.Parameters.AddRange(parameters);
 
             await command.ExecuteNonQueryAsync();
