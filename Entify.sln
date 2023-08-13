@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{E564AFD5-1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entify.Tests", "Entify.Tests\Entify.Tests.csproj", "{240EDFDA-045E-4E71-93FB-0881BEEE6632}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmark", "benchmark", "{1346D90E-30F5-4A2A-BD58-3F57CE657BD4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entify.Benchmark", "Entify.Benchmark\Entify.Benchmark.csproj", "{381303E9-B020-4EA1-A8B9-39D80E74195E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +29,10 @@ Global
 		{240EDFDA-045E-4E71-93FB-0881BEEE6632}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{240EDFDA-045E-4E71-93FB-0881BEEE6632}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{240EDFDA-045E-4E71-93FB-0881BEEE6632}.Release|Any CPU.Build.0 = Release|Any CPU
+		{381303E9-B020-4EA1-A8B9-39D80E74195E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{381303E9-B020-4EA1-A8B9-39D80E74195E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{381303E9-B020-4EA1-A8B9-39D80E74195E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{381303E9-B020-4EA1-A8B9-39D80E74195E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -35,5 +43,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{9C68EBE0-F024-43DB-A12F-7AE4A85D5F15} = {9A1006F9-4FC9-40AD-9B71-D61B91BAA946}
 		{240EDFDA-045E-4E71-93FB-0881BEEE6632} = {E564AFD5-1143-4C31-ADE3-34807FF38E65}
+		{381303E9-B020-4EA1-A8B9-39D80E74195E} = {1346D90E-30F5-4A2A-BD58-3F57CE657BD4}
 	EndGlobalSection
 EndGlobal
