@@ -23,18 +23,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\Messages.resx">
+    <EmbeddedResource Update="Application\Resources\ExceptionMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+      <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\Messages.Designer.cs">
+    <Compile Update="Application\Resources\ExceptionMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Messages.resx</DependentUpon>
+      <DependentUpon>ExceptionMessages.resx</DependentUpon>
     </Compile>
   </ItemGroup>
+
 
 </Project>

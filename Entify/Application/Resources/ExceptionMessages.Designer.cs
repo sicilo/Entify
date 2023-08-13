@@ -7,28 +7,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Entify.Resources {
+namespace Entify.Application.Resources {
     using System;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Messages {
+    public class ExceptionMessages {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Messages() {
+        internal ExceptionMessages() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Entify.Resources.Messages", typeof(Messages).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Entify.Application.Resources.ExceptionMessages", typeof(ExceptionMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -45,15 +45,27 @@ namespace Entify.Resources {
             }
         }
         
-        public static string NullObjectException {
+        public static string NullReferenceException {
             get {
-                return ResourceManager.GetString("NullObjectException", resourceCulture);
+                return ResourceManager.GetString("NullReferenceException", resourceCulture);
             }
         }
         
-        public static string EntifyExcception {
+        public static string NullEntityException {
             get {
-                return ResourceManager.GetString("EntifyExcception", resourceCulture);
+                return ResourceManager.GetString("NullEntityException", resourceCulture);
+            }
+        }
+        
+        public static string NullMethodException {
+            get {
+                return ResourceManager.GetString("NullMethodException", resourceCulture);
+            }
+        }
+        
+        public static string EntifyException {
+            get {
+                return ResourceManager.GetString("EntifyException", resourceCulture);
             }
         }
     }
