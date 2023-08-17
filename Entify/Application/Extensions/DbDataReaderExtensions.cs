@@ -116,15 +116,15 @@ public static class DbDataReaderExtensions
             
             if (isEnumerable)
             {
-                methodName = "ReaderToList";
+                methodName = nameof(ReaderToList);
             }
             else if (propertyType.IsClass)
             {
-                methodName = "ReaderToEntity";
+                methodName = nameof(ReaderToEntity);
             }
             else if (propertyType.IsPrimitive)
             {
-                methodName = "ReaderToScalar";
+                methodName = nameof(ReaderToScalar);
             }
 
             var genericArgument = isEnumerable ? propertyType.GetGenericArguments().First(): propertyType;

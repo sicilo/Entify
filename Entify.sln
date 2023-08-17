@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{E564AFD5-1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entify.Tests", "Entify.Tests\Entify.Tests.csproj", "{240EDFDA-045E-4E71-93FB-0881BEEE6632}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmark", "benchmark", "{1346D90E-30F5-4A2A-BD58-3F57CE657BD4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "measure", "measure", "{1346D90E-30F5-4A2A-BD58-3F57CE657BD4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entify.Benchmark", "Entify.Benchmark\Entify.Benchmark.csproj", "{381303E9-B020-4EA1-A8B9-39D80E74195E}"
 EndProject
