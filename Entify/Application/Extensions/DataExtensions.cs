@@ -29,7 +29,7 @@ public static class DataExtensions
                         case "string":
                             pro.SetValue(result,
                                 !dr.IsNull(column)
-                                    ? dr.Field<string>(column.ColumnName)?.Trim()
+                                    ? dr.Field<string>(column.ColumnName)
                                     : string.Empty);
                             break;
                         default:
