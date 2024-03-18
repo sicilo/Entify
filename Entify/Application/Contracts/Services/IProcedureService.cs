@@ -1,6 +1,8 @@
-﻿namespace Entify.Application.Contracts.Services;
+﻿using System.Data.Common;
 
-public interface IProcedureService
+namespace Entify.Application.Contracts.Services;
+
+public interface IProcedureService<T> where T : DbConnection
 {
     Task ExecProcedureAsync();
     Task<TR> ExecScalarProcedureAsync<TR>();

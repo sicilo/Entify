@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entify", "Entify\Entify.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9A1006F9-4FC9-40AD-9B71-D61B91BAA946}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{D942F2EE-43E4-40EB-8C19-5DFFAFC6DA4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entify.Tests", "Entify.Tests\Entify.Tests.csproj", "{8816116D-DB30-4C0A-90A2-7C745326A00C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +21,17 @@ Global
 		{9C68EBE0-F024-43DB-A12F-7AE4A85D5F15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C68EBE0-F024-43DB-A12F-7AE4A85D5F15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C68EBE0-F024-43DB-A12F-7AE4A85D5F15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8816116D-DB30-4C0A-90A2-7C745326A00C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8816116D-DB30-4C0A-90A2-7C745326A00C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8816116D-DB30-4C0A-90A2-7C745326A00C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8816116D-DB30-4C0A-90A2-7C745326A00C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{9C68EBE0-F024-43DB-A12F-7AE4A85D5F15} = {9A1006F9-4FC9-40AD-9B71-D61B91BAA946}
+		{8816116D-DB30-4C0A-90A2-7C745326A00C} = {D942F2EE-43E4-40EB-8C19-5DFFAFC6DA4C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {327D6500-63F3-479B-BA3D-019C90C214E4}

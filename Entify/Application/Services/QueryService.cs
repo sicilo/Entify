@@ -5,7 +5,7 @@ using System.Data.Common;
 
 namespace Entify.Application.Services
 {
-    public sealed class QueryService<T> : BaseConnection<T>, IQueryService where T : DbConnection
+    public sealed class QueryService<T> : BaseConnection<T>, IQueryService<T> where T : DbConnection
     {
         public QueryService(string connectionString) : base(connectionString)
         {
@@ -19,9 +19,11 @@ namespace Entify.Application.Services
             await connection.ExecNonQueryScriptAsync(query);
         }
 
-        public Task<TR> ExecScalarQueryAsync<TR>(string query)
+        public async Task<TR> ExecScalarQueryAsync<TR>(string query)
         {
-            throw new NotImplementedException();
+            await using var connection = CreateConnectionInstance();
+
+            return await connection.ExecScalarScriptAsync<TR>(query);
         }
 
         public async Task<TR> ExecEntityQueryAsync<TR>(string query) where TR : class

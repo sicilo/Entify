@@ -5,7 +5,7 @@ using Entify.Infrastructure.Extensions;
 
 namespace Entify.Application.Services;
 
-public sealed class ProcedureService<T> : BaseConnection<T>, IProcedureService where T : DbConnection
+public sealed class ProcedureService<T> : BaseConnection<T>, IProcedureService<T> where T : DbConnection
 {
     private readonly string _storedProcedure;
 

@@ -1,6 +1,8 @@
 ﻿namespace Entify.Application.Contracts.Services
 {
-    public interface IQueryService
+    using System.Data.Common;
+
+    public interface IQueryService<T> where T : DbConnection
     {
         Task ExecQueryAsync(string query);
         Task<TR> ExecScalarQueryAsync<TR>(string query);
