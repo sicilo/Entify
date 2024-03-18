@@ -1,10 +1,10 @@
 using System.Data.Common;
 using Entify.Application.Attributes;
 using Entify.Application.Helpers;
-using Entify.Application.Resources;
+using Entify.Domain.Resources;
 using Microsoft.AspNetCore.Http;
 
-namespace Entify.Application.Extensions;
+namespace Entify.Infrastructure.Extensions;
 
 public static class DbParameterExtensions
 {
@@ -21,11 +21,11 @@ public static class DbParameterExtensions
 
             foreach (var property in props)
             {
-                var propColumnName =  
-                    property.HasPropertyAttribute<ProcedureParameterAttribute>() 
-                        ? property.GetPropertyAttribute<ProcedureParameterAttribute>().Name 
+                var propColumnName =
+                    property.HasPropertyAttribute<ProcedureParameterAttribute>()
+                        ? property.GetPropertyAttribute<ProcedureParameterAttribute>().Name
                         : property.Name;
-                
+
                 var parameter = connection.CreateCommand().CreateParameter();
                 parameter.ParameterName = propColumnName;
                 parameter.Value = property.PropertyType == typeof(IFormFile)

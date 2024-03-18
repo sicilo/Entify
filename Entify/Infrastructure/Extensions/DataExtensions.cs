@@ -1,16 +1,16 @@
+using Entify.Application.Helpers;
+using Entify.Domain.Exceptions;
+using Entify.Domain.Resources;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
-using Entify.Application.Exceptions;
-using Entify.Application.Helpers;
-using Entify.Application.Resources;
 
-namespace Entify.Application.Extensions;
+namespace Entify.Infrastructure.Extensions;
 
 public static class DataExtensions
 {
     public static IEnumerable<T> DataTableToList<T>(this DataTable dataTable)
     {
-        return from DataRow row in dataTable.Rows select DataRowToEntity<T>(row);
+        return from DataRow row in dataTable.Rows select row.DataRowToEntity<T>();
     }
 
     private static T DataRowToEntity<T>(this DataRow dr)
@@ -26,10 +26,10 @@ public static class DataExtensions
                 {
                     switch (column.DataType.Name)
                     {
-                        case "string":
+                        case nameof(String):
                             pro.SetValue(result,
                                 !dr.IsNull(column)
-                                    ? dr.Field<string>(column.ColumnName)?.Trim()
+                                    ? dr.Field<string>(column.ColumnName)
                                     : string.Empty);
                             break;
                         default:
@@ -68,7 +68,7 @@ public static class DataExtensions
 
                 if (string.IsNullOrEmpty(propColumnName))
                     throw new EntifyException(ExceptionMessages.NullReferenceException);
-                
+
                 row.SetField(propColumnName, property.GetValue(item));
             }
 

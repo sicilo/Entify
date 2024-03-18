@@ -1,13 +1,12 @@
+using Entify.Application.Helpers;
+using Entify.Domain.Exceptions;
+using Entify.Domain.Resources;
 using System.Collections;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Common;
 using System.Reflection;
-using Entify.Application.Attributes;
-using Entify.Application.Exceptions;
-using Entify.Application.Helpers;
-using Entify.Application.Resources;
 
-namespace Entify.Application.Extensions;
+namespace Entify.Infrastructure.Extensions;
 
 public static class DbDataReaderExtensions
 {
@@ -113,7 +112,7 @@ public static class DbDataReaderExtensions
             var readerExtensions = typeof(DbDataReaderExtensions);
             var methodName = string.Empty;
             var isEnumerable = typeof(IEnumerable).IsAssignableFrom(propertyType);
-            
+
             if (isEnumerable)
             {
                 methodName = nameof(ReaderToList);
@@ -127,8 +126,8 @@ public static class DbDataReaderExtensions
                 methodName = nameof(ReaderToScalar);
             }
 
-            var genericArgument = isEnumerable ? propertyType.GetGenericArguments().First(): propertyType;
-            
+            var genericArgument = isEnumerable ? propertyType.GetGenericArguments().First() : propertyType;
+
             var method = readerExtensions
                 .GetMethod(methodName, BindingFlags.Static | BindingFlags.Public)
                 ?.MakeGenericMethod(genericArgument);
