@@ -9,7 +9,7 @@
 		<Version>1.0.0</Version>
 		<Authors>Sicilo</Authors>
 		<Company>FriendsAndCompany</Company>
-		<OutputPath>bin\release\</OutputPath>
+<!--		<OutputPath>bin\release\</OutputPath>-->
 	</PropertyGroup>
 
 	<ItemGroup>
