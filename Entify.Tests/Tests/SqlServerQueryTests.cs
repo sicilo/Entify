@@ -1,4 +1,4 @@
-using Entify.Domain.Exceptions;
+using System.Net.Quic;
 using Entify.Tests.Data;
 using Entify.Tests.Models;
 using Entify.Tests.Referentials;
@@ -106,5 +106,48 @@ public sealed class SqlServerQueryTests : BaseSqlServerTests
         Assert.IsType<DateTime>(userCreationDate);
 
         _testOutputHelper.WriteLine($"Id :{userCreationDate}");
+    }
+
+    [Fact]
+    public async Task ExecReaderQueryAsync_ReturnsEnumerable_Success()
+    {
+        //Arrange
+        const string query =
+            "SELECT Id, Name, Pass, Created, State FROM Users";
+        
+        //Act
+        var users = await _queryService.ExecReaderQueryAsync<User>(query);
+
+        //Assert
+        Assert.IsAssignableFrom<IEnumerable<User>>(users);
+
+        foreach (var user in users)
+        {
+            _testOutputHelper.WriteLine(user.ToString());
+        }
+    }
+    
+    [Fact]
+    public async Task ExecMultiReaderQueryAsync_ReturnsEnumerable_Success()
+    {
+        //Arrange
+        const string query =
+            @"  SELECT COUNT(Id) TotalPages FROM Users;
+                SELECT COUNT(Id)/5 TotalPages FROM Users;
+                SELECT Id, Name, Pass, Created, State FROM Users;";
+        
+        //Act
+        var pagedUsers = await _queryService.ExecMultiReaderQueryAsync<Paged<User>>(query);
+
+        //Assert
+        Assert.IsAssignableFrom<Paged<User>>(pagedUsers);
+
+        _testOutputHelper.WriteLine(pagedUsers.TotalPages.ToString());
+        _testOutputHelper.WriteLine(pagedUsers.TotalRows.ToString());
+        
+        foreach (var user in pagedUsers.Items)
+        {
+            _testOutputHelper.WriteLine(user.ToString());
+        }
     }
 }
