@@ -1,18 +1,24 @@
 using System.Net.Quic;
+using Entify.Application.Contracts.Services;
+using Entify.Application.Services;
 using Entify.Tests.Data;
 using Entify.Tests.Models;
 using Entify.Tests.Referentials;
+using Microsoft.Data.SqlClient;
 using Xunit.Abstractions;
 
 namespace Entify.Tests;
 
-public sealed class SqlServerQueryTests : BaseSqlServerTests
+public sealed class SqlServerQueryTests : BaseSqlServerTests, IClassFixture<IQueryService<SqlConnection>>
 {
     private readonly ITestOutputHelper _testOutputHelper;
+    private readonly IQueryService<SqlConnection> _queryService;
 
-    public SqlServerQueryTests(ITestOutputHelper testOutputHelper)
+    public SqlServerQueryTests(ITestOutputHelper testOutputHelper, QueryService<SqlConnection> queryService) 
     {
         _testOutputHelper = testOutputHelper;
+        _queryService = queryService;
+        
     }
 
     [Theory]
@@ -75,7 +81,7 @@ public sealed class SqlServerQueryTests : BaseSqlServerTests
         var existsText = existsUser ? "" : "not ";
         _testOutputHelper.WriteLine($"User {existsText}exists");
     }
-    
+
     [Fact]
     public async Task ExecScalarQueryAsync_ReturnsString_Success()
     {
@@ -91,7 +97,7 @@ public sealed class SqlServerQueryTests : BaseSqlServerTests
 
         _testOutputHelper.WriteLine($"Id :{userId}");
     }
-    
+
     [Fact]
     public async Task ExecScalarQueryAsync_ReturnsDateTime_Success()
     {
@@ -114,7 +120,7 @@ public sealed class SqlServerQueryTests : BaseSqlServerTests
         //Arrange
         const string query =
             "SELECT Id, Name, Pass, Created, State FROM Users";
-        
+
         //Act
         var users = await _queryService.ExecReaderQueryAsync<User>(query);
 
@@ -126,7 +132,7 @@ public sealed class SqlServerQueryTests : BaseSqlServerTests
             _testOutputHelper.WriteLine(user.ToString());
         }
     }
-    
+
     [Fact]
     public async Task ExecMultiReaderQueryAsync_ReturnsEnumerable_Success()
     {
@@ -135,7 +141,7 @@ public sealed class SqlServerQueryTests : BaseSqlServerTests
             @"  SELECT COUNT(Id) TotalPages FROM Users;
                 SELECT COUNT(Id)/5 TotalPages FROM Users;
                 SELECT Id, Name, Pass, Created, State FROM Users;";
-        
+
         //Act
         var pagedUsers = await _queryService.ExecMultiReaderQueryAsync<Paged<User>>(query);
 
@@ -144,11 +150,10 @@ public sealed class SqlServerQueryTests : BaseSqlServerTests
 
         _testOutputHelper.WriteLine(pagedUsers.TotalPages.ToString());
         _testOutputHelper.WriteLine(pagedUsers.TotalRows.ToString());
-        
+
         foreach (var user in pagedUsers.Items)
         {
             _testOutputHelper.WriteLine(user.ToString());
         }
     }
 }
-
