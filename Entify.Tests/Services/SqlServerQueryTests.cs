@@ -1,34 +1,24 @@
-using System.Net.Quic;
 using Entify.Application.Contracts.Services;
-using Entify.Application.Services;
 using Entify.Tests.Data;
 using Entify.Tests.Models;
 using Entify.Tests.Referentials;
 using Microsoft.Data.SqlClient;
 using Xunit.Abstractions;
 
-namespace Entify.Tests;
+namespace Entify.Tests.Services;
 
-public sealed class SqlServerQueryTests : BaseSqlServerTests, IClassFixture<IQueryService<SqlConnection>>
+public sealed class SqlServerQueryTests(ITestOutputHelper testOutputHelper, QueryServiceBase queryServiceBase)
+    : QueryServiceBase, IClassFixture<QueryServiceBase>
 {
-    private readonly ITestOutputHelper _testOutputHelper;
-    private readonly IQueryService<SqlConnection> _queryService;
-
-    public SqlServerQueryTests(ITestOutputHelper testOutputHelper, QueryService<SqlConnection> queryService) 
-    {
-        _testOutputHelper = testOutputHelper;
-        _queryService = queryService;
-        
-    }
+    private readonly IQueryService<SqlConnection> _queryService = queryServiceBase.QueryService;
 
     [Theory]
-    [ClassData(typeof(QueryTestData))]
+    [ClassData(typeof(UsersTestData))]
     public async Task ExecQueryAsync_SuccessTest(string userName, string pass)
     {
         //Arrange 
         var query =
-            $"INSERT INTO Users(Name,Pass) " +
-            $"VALUES ('{userName}','{pass}');";
+            $"INSERT INTO Users(Name,Pass) VALUES ('{userName}','{pass}');";
 
         //Act
         var exception = await Record.ExceptionAsync(async () => await _queryService.ExecQueryAsync(query));
@@ -47,7 +37,7 @@ public sealed class SqlServerQueryTests : BaseSqlServerTests, IClassFixture<IQue
     }
 
     [Theory]
-    [InlineData("camilo.mejia")]
+    [InlineData("sicilo")]
     public async Task ExecEntityQueryAsync_Success(string userName)
     {
         //Arrange 
@@ -61,7 +51,7 @@ public sealed class SqlServerQueryTests : BaseSqlServerTests, IClassFixture<IQue
         Assert.IsType<User>(user);
         Assert.Equal(userName, user.Name);
 
-        _testOutputHelper.WriteLine(user.ToString());
+        testOutputHelper.WriteLine(user.ToString());
     }
 
 
@@ -70,7 +60,7 @@ public sealed class SqlServerQueryTests : BaseSqlServerTests, IClassFixture<IQue
     {
         //Arrange 
         const string query =
-            "SELECT CASE WHEN EXISTS ( SELECT Id FROM Users WHERE Name = 'camilo.mejia') THEN 1 ELSE 0 END";
+            "SELECT CASE WHEN EXISTS ( SELECT Id FROM Users WHERE Name = 'sicilo') THEN 1 ELSE 0 END";
 
         //Act
         var existsUser = await _queryService.ExecScalarQueryAsync<bool>(query);
@@ -79,7 +69,7 @@ public sealed class SqlServerQueryTests : BaseSqlServerTests, IClassFixture<IQue
         Assert.IsType<bool>(existsUser);
 
         var existsText = existsUser ? "" : "not ";
-        _testOutputHelper.WriteLine($"User {existsText}exists");
+        testOutputHelper.WriteLine($"User {existsText}exists");
     }
 
     [Fact]
@@ -87,7 +77,7 @@ public sealed class SqlServerQueryTests : BaseSqlServerTests, IClassFixture<IQue
     {
         //Arrange 
         const string query =
-            "SELECT Id FROM Users WHERE Name = 'camilo.mejia'";
+            "SELECT Id FROM Users WHERE Name = 'sicilo'";
 
         //Act
         var userId = await _queryService.ExecScalarQueryAsync<Guid>(query);
@@ -95,7 +85,7 @@ public sealed class SqlServerQueryTests : BaseSqlServerTests, IClassFixture<IQue
         //Assert
         Assert.IsType<Guid>(userId);
 
-        _testOutputHelper.WriteLine($"Id :{userId}");
+        testOutputHelper.WriteLine($"Id :{userId}");
     }
 
     [Fact]
@@ -103,7 +93,7 @@ public sealed class SqlServerQueryTests : BaseSqlServerTests, IClassFixture<IQue
     {
         //Arrange 
         const string query =
-            "SELECT Created FROM Users WHERE Name = 'camilo.mejia'";
+            "SELECT Created FROM Users WHERE Name = 'sicilo'";
 
         //Act
         var userCreationDate = await _queryService.ExecScalarQueryAsync<DateTime>(query);
@@ -111,7 +101,7 @@ public sealed class SqlServerQueryTests : BaseSqlServerTests, IClassFixture<IQue
         //Assert
         Assert.IsType<DateTime>(userCreationDate);
 
-        _testOutputHelper.WriteLine($"Id :{userCreationDate}");
+        testOutputHelper.WriteLine($"Id :{userCreationDate}");
     }
 
     [Fact]
@@ -129,7 +119,7 @@ public sealed class SqlServerQueryTests : BaseSqlServerTests, IClassFixture<IQue
 
         foreach (var user in users)
         {
-            _testOutputHelper.WriteLine(user.ToString());
+            testOutputHelper.WriteLine(user.ToString());
         }
     }
 
@@ -148,12 +138,12 @@ public sealed class SqlServerQueryTests : BaseSqlServerTests, IClassFixture<IQue
         //Assert
         Assert.IsAssignableFrom<Paged<User>>(pagedUsers);
 
-        _testOutputHelper.WriteLine(pagedUsers.TotalPages.ToString());
-        _testOutputHelper.WriteLine(pagedUsers.TotalRows.ToString());
+        testOutputHelper.WriteLine(pagedUsers.TotalPages.ToString());
+        testOutputHelper.WriteLine(pagedUsers.TotalRows.ToString());
 
         foreach (var user in pagedUsers.Items)
         {
-            _testOutputHelper.WriteLine(user.ToString());
+            testOutputHelper.WriteLine(user.ToString());
         }
     }
 }

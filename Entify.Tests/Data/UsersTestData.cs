@@ -1,8 +1,9 @@
 ﻿using System.Collections;
+using Entify.Tests.Models;
 
 namespace Entify.Tests.Data;
 
-public class QueryTestData : IEnumerable<object[]>
+public class UsersTestData : IEnumerable<object[]>
 {
     private static readonly Random Random = new();
 
@@ -21,6 +22,26 @@ public class QueryTestData : IEnumerable<object[]>
             var surname = Surnames[Random.Next(Surnames.Count)];
             yield return [$"{name}.{surname}".ToLower(), surname];
         }
+    }
+    
+    public IEnumerable<User> GetUsers(int usersToCreate = 5)
+    {
+        for (var i = 0; i < usersToCreate; i++)
+        {
+            var name = Names[Random.Next(Names.Count)];
+            var surname = Surnames[Random.Next(Surnames.Count)];
+            yield return new User
+            {
+                Name = $"{name}.{surname}",
+                Pass = $"{surname}&{name}"
+            };
+        }
+        
+        yield return new User
+        {
+            Name = $"sicilo",
+            Pass = $"sicilo"
+        };
     }
 
     IEnumerator IEnumerable.GetEnumerator()

@@ -4,13 +4,13 @@ using Microsoft.Data.SqlClient;
 
 namespace Entify.Tests.Referentials;
 
-public class QueryServiceBase 
+public class ProcedureServiceBase : ConnectionBase
 {
-    protected const string ConnectionString = "Data Source=localhost;Initial Catalog=Entify;User Id=sa;Password=P70m3t30;TrustServerCertificate=True;";
+    private const string Procedure = "SpUsers"; 
+    public readonly IProcedureService<SqlConnection> ProcedureService;
 
-    protected readonly IProcedureService<SqlConnection> _procedureService;
-
-    protected QueryServiceBase()
+    public ProcedureServiceBase()
     {
+        ProcedureService = new ProcedureService<SqlConnection>(Procedure,ConnectionString);
     }
 }
