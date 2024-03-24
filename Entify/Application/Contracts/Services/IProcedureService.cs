@@ -4,14 +4,14 @@ namespace Entify.Application.Contracts.Services;
 
 public interface IProcedureService<T> where T : DbConnection
 {
-    Task ExecProcedureAsync();
-    Task ExecProcedureAsync(params object[] parameters);
-    Task<TR> ExecScalarProcedureAsync<TR>();
-    Task<TR> ExecScalarProcedureAsync<TR>(params object[] parameters);
-    Task<TR> ExecEntityProcedureAsync<TR>() where TR : class;
-    Task<TR> ExecEntityProcedureAsync<TR>(params object[] parameters) where TR : class;
-    Task<IEnumerable<TR>> ExecReaderProcedureAsync<TR>();
-    Task<IEnumerable<TR>> ExecReaderProcedureAsync<TR>(params object[] parameters);
-    Task<TR> ExecMultiReaderProcedureAsync<TR>() where TR : class;
-    Task<TR> ExecMultiReaderProcedureAsync<TR>(params object[] parameters) where TR : class;
+    Task ExecProcedureAsync(string storedProcedure);
+    Task ExecProcedureAsync(string storedProcedure, params object[] parameters);
+    Task<TR> ExecScalarProcedureAsync<TR>(string storedProcedure);
+    Task<TR> ExecScalarProcedureAsync<TR>(string storedProcedure, params object[] parameters);
+    Task<TR> ExecEntityProcedureAsync<TR>(string storedProcedure) where TR : class;
+    Task<TR> ExecEntityProcedureAsync<TR>(string storedProcedure, params object[] parameters) where TR : class;
+    Task<IEnumerable<TR>> ExecReaderProcedureAsync<TR>(string storedProcedure);
+    Task<IEnumerable<TR>> ExecReaderProcedureAsync<TR>(string storedProcedure, params object[] parameters);
+    Task<TR> ExecMultiReaderProcedureAsync<TR>(string storedProcedure) where TR : class;
+    Task<TR> ExecMultiReaderProcedureAsync<TR>(string storedProcedure, params object[] parameters) where TR : class;
 }

@@ -9,81 +9,79 @@ namespace Entify.Application.Services;
 public sealed class ProcedureService<T> : BaseConnection<T>, IProcedureService<T> where T : DbConnection
 {
     private const CommandType ProcedureType = CommandType.StoredProcedure;
-    private readonly string _storedProcedure;
 
-    public ProcedureService(string storedProcedure, string connectionString) : base(connectionString)
+    public ProcedureService(T connection) : base(connection)
     {
-        _storedProcedure = storedProcedure;
     }
-
-    public async Task ExecProcedureAsync()
+    
+    public async Task ExecProcedureAsync(string storedProcedure)
     {
         await using var connection = CreateConnectionInstance();
 
-        await connection.ExecNonQueryScriptAsync(_storedProcedure);
+        await connection.ExecNonQueryScriptAsync(storedProcedure);
     }
 
-    public async Task ExecProcedureAsync(params object[] parameters)
+    public async Task ExecProcedureAsync(string storedProcedure,params object[] parameters)
     {
         await using var connection = CreateConnectionInstance();
 
-        await connection.ExecNonQueryScriptAsync(_storedProcedure, ProcedureType, parameters);
+        await connection.ExecNonQueryScriptAsync(storedProcedure, ProcedureType, parameters);
     }
 
-    public async Task<TR> ExecScalarProcedureAsync<TR>()
+    public async Task<TR> ExecScalarProcedureAsync<TR>(string storedProcedure)
     {
         await using var connection = CreateConnectionInstance();
 
-        return await connection.ExecScalarScriptAsync<TR>(_storedProcedure);
+        return await connection.ExecScalarScriptAsync<TR>(storedProcedure);
     }
 
-    public async Task<TR> ExecScalarProcedureAsync<TR>(params object[] parameters)
+    public async Task<TR> ExecScalarProcedureAsync<TR>(string storedProcedure,params object[] parameters)
     {
         await using var connection = CreateConnectionInstance();
 
-        return await connection.ExecScalarScriptAsync<TR>(_storedProcedure, ProcedureType, parameters);
+        return await connection.ExecScalarScriptAsync<TR>(storedProcedure, ProcedureType, parameters);
     }
 
-    public async Task<TR> ExecEntityProcedureAsync<TR>() where TR : class
+    public async Task<TR> ExecEntityProcedureAsync<TR>(string storedProcedure) where TR : class
     {
         await using var connection = CreateConnectionInstance();
 
-        return await connection.ExecEntityScriptAsync<TR>(_storedProcedure);
+        return await connection.ExecEntityScriptAsync<TR>(storedProcedure);
     }
 
-    public async Task<TR> ExecEntityProcedureAsync<TR>(params object[] parameters) where TR : class
+    public async Task<TR> ExecEntityProcedureAsync<TR>(string storedProcedure,params object[] parameters) where TR : class
     {
         await using var connection = CreateConnectionInstance();
 
-        return await connection.ExecEntityScriptAsync<TR>(_storedProcedure, ProcedureType, parameters);
+        return await connection.ExecEntityScriptAsync<TR>(storedProcedure, ProcedureType, parameters);
     }
 
-    public async Task<IEnumerable<TR>> ExecReaderProcedureAsync<TR>()
+    public async Task<IEnumerable<TR>> ExecReaderProcedureAsync<TR>(string storedProcedure)
     {
         await using var connection = CreateConnectionInstance();
 
-        return await connection.ExecReaderScriptAsync<TR>(_storedProcedure);
+        return await connection.ExecReaderScriptAsync<TR>(storedProcedure);
     }
 
-    public async Task<IEnumerable<TR>> ExecReaderProcedureAsync<TR>(params object[] parameters)
+    public async Task<IEnumerable<TR>> ExecReaderProcedureAsync<TR>(string storedProcedure,params object[] parameters)
     {
         await using var connection = CreateConnectionInstance();
 
-        return await connection.ExecReaderScriptAsync<TR>(_storedProcedure, ProcedureType, parameters);
+        return await connection.ExecReaderScriptAsync<TR>(storedProcedure, ProcedureType, parameters);
     }
 
-    public async Task<TR> ExecMultiReaderProcedureAsync<TR>() where TR : class
+    public async Task<TR> ExecMultiReaderProcedureAsync<TR>(string storedProcedure) where TR : class
     {
         await using var connection = CreateConnectionInstance();
 
-        return await connection.ExecMultiReaderScriptAsync<TR>(_storedProcedure);
+        return await connection.ExecMultiReaderScriptAsync<TR>(storedProcedure);
     }
 
-    public async Task<TR> ExecMultiReaderProcedureAsync<TR>(params object[] parameters) where TR : class
+    public async Task<TR> ExecMultiReaderProcedureAsync<TR>(string storedProcedure,params object[] parameters) where TR : class
     {
         await using var connection = CreateConnectionInstance();
 
-        return await connection.ExecMultiReaderScriptAsync<TR>(_storedProcedure, ProcedureType,
+        return await connection.ExecMultiReaderScriptAsync<TR>(storedProcedure, ProcedureType,
             parameters);
     }
 }

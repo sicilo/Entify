@@ -6,5 +6,10 @@ namespace Entify.Tests.Referentials;
 
 public class QueryServiceBase : ConnectionBase
 {
-    public readonly IQueryService<SqlConnection> QueryService = new QueryService<SqlConnection>(ConnectionString);
+    public readonly IQueryService<SqlConnection> QueryService;
+
+    public QueryServiceBase()
+    {
+        QueryService = new QueryService<SqlConnection>(Connection);
+    }
 }

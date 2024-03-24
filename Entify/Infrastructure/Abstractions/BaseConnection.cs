@@ -6,11 +6,11 @@
 
     public abstract class BaseConnection<T> where T : DbConnection
     {
-        private readonly string _connectionString;
+        private readonly T _connection;
 
-        protected BaseConnection(string connectionString)
+        protected BaseConnection(T connection)
         {
-            _connectionString = connectionString;
+            _connection = connection;
         }
 
         protected T CreateConnectionInstance()
@@ -22,12 +22,12 @@
                 var message = string.Format(
                     CultureInfo.InvariantCulture,
                     "No connection type was given"
-                    );
+                );
 
                 throw new EntifyException(message);
             }
 
-            var connection = (T?)Activator.CreateInstance(connectionType, _connectionString);
+            var connection = (T?)Activator.CreateInstance(_connection.GetType(), _connection.ConnectionString);
 
             if (connection is not null) return connection;
             {
@@ -38,7 +38,6 @@
 
                 throw new EntifyException(message);
             }
-
         }
     }
 }

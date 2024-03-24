@@ -9,6 +9,8 @@ namespace Entify.Tests.Services;
 
 public class SqlServerProcedureTests : IClassFixture<ProcedureServiceBase>
 {
+    private const string Procedure = "SpUsers"; 
+
     private readonly ITestOutputHelper _testOutputHelper;
     private readonly IProcedureService<SqlConnection> _procedureService;
 
@@ -36,7 +38,7 @@ public class SqlServerProcedureTests : IClassFixture<ProcedureServiceBase>
 
         //Act
         var exception = await Record.ExceptionAsync(async () =>
-            await _procedureService.ExecProcedureAsync(parameters));
+            await _procedureService.ExecProcedureAsync(Procedure, parameters));
 
         //Assert
         Assert.Null(exception);
@@ -50,7 +52,7 @@ public class SqlServerProcedureTests : IClassFixture<ProcedureServiceBase>
         var options = new { Option = "Create" };
         
         //Act
-        var result = await _procedureService.ExecScalarProcedureAsync<Guid>(options, user);
+        var result = await _procedureService.ExecScalarProcedureAsync<Guid>(Procedure,options, user);
 
         //Assert
         Assert.IsType<Guid>(result);

@@ -9,7 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9A1006F9-4FC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{D942F2EE-43E4-40EB-8C19-5DFFAFC6DA4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entify.Tests", "Entify.Tests\Entify.Tests.csproj", "{8816116D-DB30-4C0A-90A2-7C745326A00C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entify.Tests", "Entify.Tests\Entify.Tests.csproj", "{8816116D-DB30-4C0A-90A2-7C745326A00C}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Entify.Database", "Entify.Database\Entify.Database.sqlproj", "{F4D4E7D9-415D-4035-8C8D-1C6CB5ECCECA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +27,12 @@ Global
 		{8816116D-DB30-4C0A-90A2-7C745326A00C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8816116D-DB30-4C0A-90A2-7C745326A00C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8816116D-DB30-4C0A-90A2-7C745326A00C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4D4E7D9-415D-4035-8C8D-1C6CB5ECCECA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4D4E7D9-415D-4035-8C8D-1C6CB5ECCECA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4D4E7D9-415D-4035-8C8D-1C6CB5ECCECA}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F4D4E7D9-415D-4035-8C8D-1C6CB5ECCECA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4D4E7D9-415D-4035-8C8D-1C6CB5ECCECA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4D4E7D9-415D-4035-8C8D-1C6CB5ECCECA}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +40,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{9C68EBE0-F024-43DB-A12F-7AE4A85D5F15} = {9A1006F9-4FC9-40AD-9B71-D61B91BAA946}
 		{8816116D-DB30-4C0A-90A2-7C745326A00C} = {D942F2EE-43E4-40EB-8C19-5DFFAFC6DA4C}
+		{F4D4E7D9-415D-4035-8C8D-1C6CB5ECCECA} = {9A1006F9-4FC9-40AD-9B71-D61B91BAA946}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {327D6500-63F3-479B-BA3D-019C90C214E4}

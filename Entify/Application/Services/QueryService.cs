@@ -7,7 +7,7 @@ namespace Entify.Application.Services
 {
     public sealed class QueryService<T> : BaseConnection<T>, IQueryService<T> where T : DbConnection
     {
-        public QueryService(string connectionString) : base(connectionString)
+        public QueryService(T connection) : base(connection)
         {
         }
 
