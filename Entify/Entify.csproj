@@ -6,10 +6,11 @@
 		<AssemblyVersion>2.0.0.0</AssemblyVersion>
 		<FileVersion>2.0.0.0</FileVersion>
 		<VersionPrefix>0.0.1</VersionPrefix>
-		<Version>1.0.0</Version>
-		<Authors>Sicilo</Authors>
+		<Version>0.0.1</Version>
+		<Authors>sicilo</Authors>
 		<Company>FriendsAndCompany</Company>
 		<OutputPath>bin\release\</OutputPath>
+		<RepositoryUrl>https://github.com/sicilo/Entify</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>

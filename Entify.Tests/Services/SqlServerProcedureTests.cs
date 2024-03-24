@@ -1,12 +1,11 @@
 ﻿using Entify.Application.Contracts.Services;
-using Entify.Application.Services;
 using Entify.Tests.Data;
 using Entify.Tests.Models;
 using Entify.Tests.Referentials;
 using Microsoft.Data.SqlClient;
 using Xunit.Abstractions;
 
-namespace Entify.Tests;
+namespace Entify.Tests.Services;
 
 public class SqlServerProcedureTests : IClassFixture<ProcedureServiceBase>
 {
