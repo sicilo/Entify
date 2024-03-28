@@ -1,0 +1,29 @@
+﻿name: Github Action Entify
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs: 
+  build:
+    strategy:
+      matrix:
+        configuration: [ Release ]
+    runs-on: windows-latest
+    env:
+      Solution_Name: Entify.sln                                 # Replace with your solution name, i.e. MyWpfApp.sln.
+      Test_Project_Path: Entify\Entify.csproj                   # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
+    
+    steps:
+      - name: Cloning project (Checkout)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0    
+        run: ls -l
+
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x      
+        run: dotnet --version                         
