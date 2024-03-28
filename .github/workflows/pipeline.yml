@@ -39,6 +39,6 @@ jobs:
         run: dotnet restore --interactive
           
       - name: Building project
-        run: dotnet build --configuration $env:Configuration $PROJECT_PATH
+        run: dotnet build --configuration $Configuration $PROJECT_PATH
         env:
           Configuration: ${{ matrix.configuration }}
