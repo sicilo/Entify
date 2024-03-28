@@ -16,6 +16,7 @@ jobs:
     env:
       SOLUTION_NAME: Entify.sln                                 
       PROJECT_PATH: ./Entify/Entify.csproj
+      PROJECT_PACKAGE_PATH: cd ./Entify/bin/Release
       TEST_PROJECT_PATH: ./Entify.Tests/Entify.Tests.csproj           
     
     steps:
@@ -47,4 +48,7 @@ jobs:
         run: dotnet nuget add source --username sicilo --password ${{ secrets.NUGET }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/sicilo/index.json"
 
       - name: Packing Project
-        run: dotnet pack --configuration Release $PROJECT_PATH          
+        run: dotnet pack --configuration Release $PROJECT_PATH       
+          
+      - name: Packing Project Result
+        run: cd $PROJECT_PACKAGE_PATH        
