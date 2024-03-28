@@ -22,7 +22,7 @@ jobs:
           fetch-depth: 0   
         
       - name: Checking files
-        run: Dir
+        run: ls
 
       - name: Install .NET Core
         uses: actions/setup-dotnet@v4
