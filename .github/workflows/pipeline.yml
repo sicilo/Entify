@@ -36,4 +36,4 @@ jobs:
         run: dotnet restore --interactive
           
       - name: Building project
-        run: dotnet build --configuration Release
+        run: dotnet build --configuration Release .\Entify\Entify.csproj
