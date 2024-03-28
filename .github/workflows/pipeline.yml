@@ -36,6 +36,6 @@ jobs:
         run: dotnet restore --interactive
           
       - name: Building project
-        run: dotnet build --configuration /p:configuration
+        run: dotnet build --configuration $env:configuration
         env: 
           configuration: Release
