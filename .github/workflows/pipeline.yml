@@ -10,7 +10,9 @@ jobs:
     strategy:
       matrix:
         configuration: [ Release ]
+    
     runs-on: ubuntu-latest
+    
     env:
       Solution_Name: Entify.sln                                 
       Library_Path: ./Entify/Entify.csproj
@@ -37,6 +39,6 @@ jobs:
         run: dotnet restore --interactive
           
       - name: Building project
-        run: dotnet build --configuration $env:configuration $env:Library_Path
+        run: dotnet build --configuration $env:Configuration $env:Library_Path
         env:
-          configuration: ${{matrix.configuration}}
+          Configuration: ${{ matrix.configuration }}
