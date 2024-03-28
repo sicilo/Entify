@@ -12,8 +12,9 @@ jobs:
         configuration: [ Release ]
     runs-on: ubuntu-latest
     env:
-      Solution_Name: Entify.sln                                 # Replace with your solution name, i.e. MyWpfApp.sln.
-      Test_Project_Path: Entify\Entify.csproj                   # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
+      Solution_Name: Entify.sln                                 
+      Library_Path: ./Entify/Entify.csproj
+      Test_Project_Path: ./Entify.Tests/Entify.Tests.csproj           
     
     steps:
       - name: Cloning project (Checkout)
@@ -22,7 +23,7 @@ jobs:
           fetch-depth: 0   
         
       - name: Checking files
-        run: ls
+        run: ls -l
 
       - name: Install .NET Core
         uses: actions/setup-dotnet@v4
@@ -36,4 +37,6 @@ jobs:
         run: dotnet restore --interactive
           
       - name: Building project
-        run: dotnet build --configuration Release ./Entify/Entify.csproj
+        run: dotnet build --configuration $env:configuration $env:Library_Path
+        env:
+          configuration: ${{matrix.configuration}}
