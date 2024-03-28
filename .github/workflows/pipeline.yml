@@ -42,3 +42,9 @@ jobs:
         run: dotnet build --configuration $Configuration $PROJECT_PATH
         env:
           Configuration: ${{ matrix.configuration }}
+          
+      - name: Adding github nuget
+        run: dotnet nuget add source --username sicilo --password ${{ secrets.NUGET }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/sicilo/index.json"
+
+      - name: Packing Project
+        run: dotnet pack --configuration Release $PROJECT_PATH          
