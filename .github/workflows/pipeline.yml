@@ -14,9 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
-      Solution_Name: Entify.sln                                 
-      Library_Path: ./Entify/Entify.csproj
-      Test_Project_Path: ./Entify.Tests/Entify.Tests.csproj           
+      SOLUTION_NAME: Entify.sln                                 
+      PROJECT_PATH: ./Entify/Entify.csproj
+      TEST_PROJECT_PATH: ./Entify.Tests/Entify.Tests.csproj           
     
     steps:
       - name: Cloning project (Checkout)
@@ -39,6 +39,6 @@ jobs:
         run: dotnet restore --interactive
           
       - name: Building project
-        run: dotnet build --configuration $env:Configuration $env:Library_Path
+        run: dotnet build --configuration $env:Configuration $PROJECT_PATH
         env:
           Configuration: ${{ matrix.configuration }}
