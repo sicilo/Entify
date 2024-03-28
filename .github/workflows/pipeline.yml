@@ -16,7 +16,7 @@ jobs:
     env:
       SOLUTION_NAME: Entify.sln                                 
       PROJECT_PATH: ./Entify/Entify.csproj
-      PROJECT_PACKAGE_PATH: Entify/bin
+      PROJECT_PACKAGE_PATH: Entify/bin/Release
       TEST_PROJECT_PATH: ./Entify.Tests/Entify.Tests.csproj           
     
     steps:
@@ -51,4 +51,4 @@ jobs:
         run: dotnet pack --configuration Release $PROJECT_PATH       
           
       - name: Packing Project Result
-        run: cd $PROJECT_PACKAGE_PATH        
+        run: ls $PROJECT_PACKAGE_PATH        
