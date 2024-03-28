@@ -1,4 +1,4 @@
-﻿name: Github Action Entify
+﻿name: Entify Publish Nuget
 
 on:
   push:
