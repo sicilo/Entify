@@ -30,4 +30,12 @@ jobs:
           dotnet-version: 8.0.x    
         
       - name: Checking version
-        run: dotnet --version                         
+        run: dotnet --version      
+          
+      - name: Restoring packages
+        run: dotnet restore --interactive
+          
+      - name: Building project
+        run: dotnet build --configuration /p:configuration
+        env: 
+          configuration: Release
