@@ -19,11 +19,15 @@ jobs:
       - name: Cloning project (Checkout)
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0    
+          fetch-depth: 0   
+        
+      - name: Checking files
         run: ls -l
 
       - name: Install .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x      
+          dotnet-version: 8.0.x    
+        
+      - name: Checking version
         run: dotnet --version                         
