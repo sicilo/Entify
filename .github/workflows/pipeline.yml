@@ -16,7 +16,7 @@ jobs:
     env:
       SOLUTION_NAME: Entify.sln                                 
       PROJECT_PATH: ./Entify/Entify.csproj
-      PROJECT_PACKAGE_PATH: cd ./Entify/bin/Release
+      PROJECT_PACKAGE_PATH: cd /Entify/bin
       TEST_PROJECT_PATH: ./Entify.Tests/Entify.Tests.csproj           
     
     steps:
