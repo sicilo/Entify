@@ -16,7 +16,7 @@ jobs:
     env:
       SOLUTION_NAME: Entify.sln                                 
       PROJECT_PATH: ./Entify/Entify.csproj
-      PROJECT_PACKAGE_PATH: Entify/bin/release
+      PROJECT_PACKAGE_PATH: Entify/bin/release/*.nupkg
       TEST_PROJECT_PATH: ./Entify.Tests/Entify.Tests.csproj           
     
     steps:
@@ -51,4 +51,4 @@ jobs:
         run: dotnet pack --configuration Release $PROJECT_PATH       
           
       - name: Checking package
-        run: ls $PROJECT_PACKAGE_PATH        
+        run: dotnet nuget push $PROJECT_PACKAGE_PATH  --api-key ${{ secrets.NUGET }} --source "github"        
