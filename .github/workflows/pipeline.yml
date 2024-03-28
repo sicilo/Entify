@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         configuration: [ Release ]
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     env:
       Solution_Name: Entify.sln                                 # Replace with your solution name, i.e. MyWpfApp.sln.
       Test_Project_Path: Entify\Entify.csproj                   # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
