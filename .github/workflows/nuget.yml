@@ -1,9 +1,12 @@
 ﻿name: Entify Publish Nuget
 
 on:
-  push:
+#  push:
+#    branches:
+#      - develop
+  pull_request: 
     branches:
-      - develop
+      - main
 
 jobs: 
   build:
